@@ -18,12 +18,22 @@
 #
 __author__ = 'varribas'
 
-import sys
 
-from easyiceconfig import easyiceconfig as EasyIce
+# JdeRobot main Ice.Config path
+JDEROBOT_PATHS = "/usr/local/share/jderobot/conf"
 
-ic = EasyIce.initialize(sys.argv)
-print ic.getProperties()
 
-ic.shutdown()
+# JdeRobot Gazebo's plugins Ice.Config path
+import os
+JDEROBOT_GAZEBO_PLUGINS_BASE_PATH = '/usr/local/share/jderobot/gazebo/plugins'
 
+gazebo_plugins = list()
+for dir in os.listdir(JDEROBOT_GAZEBO_PLUGINS_BASE_PATH):
+    plugin_dir = os.path.join(JDEROBOT_GAZEBO_PLUGINS_BASE_PATH, dir)
+    gazebo_plugins.append(plugin_dir)
+
+JDEROBOT_GAZEBO_PLUGINS_PATHS = ':'.join(str(x) for x in gazebo_plugins)
+
+
+# "Hardcored" PATHS
+HARDCORED_PATHS = "%s:%s" %(JDEROBOT_PATHS, JDEROBOT_GAZEBO_PLUGINS_PATHS)

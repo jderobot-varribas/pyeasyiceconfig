@@ -22,9 +22,10 @@ import sys, os
 import re
 import Ice
 
+from hardcoredpaths import HARDCORED_PATHS
+
 
 ENV_PATH_NAME = "ICE_CONFIG_PATH"
-JDEROBOT_PATHS = "/usr/local/share/jderobot/conf"
 
 
 def findConfigFile(filename):
@@ -32,8 +33,8 @@ def findConfigFile(filename):
     env_paths = os.getenv(ENV_PATH_NAME)
     if env_paths:
         paths = paths+":"+env_paths
-    if JDEROBOT_PATHS:
-        paths = paths+":"+JDEROBOT_PATHS
+    if HARDCORED_PATHS:
+        paths = paths+":"+HARDCORED_PATHS
 
     for path in paths.split(":"):
         file_path = os.path.join(path, filename)
@@ -46,9 +47,10 @@ def findConfigFile(filename):
 def loadIceConfig(filename, properties = Ice.createProperties()):
     filepath = findConfigFile(filename)
     if (filepath):
+        print 'loading Ice.Config file %s' %(filepath)
         properties.load(filepath)
     else:
-        msg = "IceConfig file '%s' could not being found" % (filename)
+        msg = "Ice.Config file '%s' could not being found" % (filename)
         raise ValueError(msg)
 
     return properties
